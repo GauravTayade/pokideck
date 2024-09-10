@@ -1,9 +1,25 @@
-import {Card, CardHeader, CardBody, Image, Button, CardFooter} from "@nextui-org/react";
+import {Card, CardHeader, CardBody, Image, Button, CardFooter, useDisclosure} from "@nextui-org/react";
 import ComponentBtnPokemonInfo from "@/app/components/ComponentBtnPokemonInfo";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faFire} from "@fortawesome/free-solid-svg-icons";
+import ComponentCardViewPokemon from "@/app/components/ComponentCardViewPokemon";
+import axios from "axios";
+import {useState} from "react";
 
 const ComponentPokemonCard = (props) =>{
+
+  const {isOpen, onOpen, onOpenChange} = useDisclosure();
+
+  const [pokemonDetail, setPokemonDetail] = useState(null);
+
+  const getPokemonDetails = (id) =>{
+    axios.get('https://pokeapi.co/api/v2/pokemon/'+id).then((response) => {
+      setPokemonDetail(response.data)
+    })
+  }
+
+
+
     return(
         <Card className="py-4">
             <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
@@ -22,7 +38,10 @@ const ComponentPokemonCard = (props) =>{
                 />
             </CardBody>
             <CardFooter>
-                <ComponentBtnPokemonInfo/>
+                <ComponentBtnPokemonInfo onOpen={onOpen} getPokemonDetails={getPokemonDetails} pokemonId={props.pokemon.id}/>
+                {pokemonDetail ?
+                  <ComponentCardViewPokemon isOpen={isOpen} pokemonDetail={pokemonDetail} onOpenChange={onOpenChange}/>
+                  : ''}
             </CardFooter>
         </Card>
     )

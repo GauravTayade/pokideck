@@ -1,8 +1,8 @@
 import {Button} from "@nextui-org/react";
 
-const ComponentBtnPokemonInfo= () => {
+const ComponentBtnPokemonInfo= (props) => {
     return(
-        <Button className="bottom-0 w-full">View Info</Button>
+      <Button size="md" onClick={()=>props.getPokemonDetails(props.pokemonId)} fullWidth={true} variant="shadow" color="secondary" onPress={props.onOpen}>View Info</Button>
     )
 }
 
